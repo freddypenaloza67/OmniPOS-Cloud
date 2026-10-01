@@ -1,0 +1,9 @@
+{
+  "name": "OmniPOS Retail - Sistema de Gestión Comercial",
+  "description": "Sistema integral de punto de venta, compras, inventario multimoneda, sincronización en la nube y escáner inteligente de facturas.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

@@ -1,0 +1,152 @@
+{
+  "entities": {
+    "product": {
+      "title": "Product",
+      "description": "Inventory product item with barcode, pricing, and stock tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "sku": { "type": "string", "maxLength": 100 },
+        "barcode": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 100 },
+        "costUSD": { "type": "number" },
+        "priceUSD": { "type": "number" },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 30 },
+        "description": { "type": "string", "maxLength": 500 },
+        "supplierId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "priceUSD", "stock"]
+    },
+    "customer": {
+      "title": "Customer",
+      "description": "Retail customer record with contact info and credit limits",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "taxId": { "type": "string", "maxLength": 50 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 150 },
+        "address": { "type": "string", "maxLength": 300 },
+        "creditLimitUSD": { "type": "number" },
+        "currentDebtUSD": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "name", "taxId"]
+    },
+    "supplier": {
+      "title": "Supplier",
+      "description": "Merchandise vendor and inventory supplier record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "taxId": { "type": "string", "maxLength": 50 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 150 },
+        "address": { "type": "string", "maxLength": 300 },
+        "paymentTerms": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "name", "taxId"]
+    },
+    "sale": {
+      "title": "Sale",
+      "description": "POS checkout transaction order and payment details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "invoiceNumber": { "type": "string", "maxLength": 100 },
+        "date": { "type": "string" },
+        "customerId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 200 },
+        "customerTaxId": { "type": "string", "maxLength": 50 },
+        "items": { "type": "array" },
+        "subtotalUSD": { "type": "number" },
+        "discountUSD": { "type": "number" },
+        "taxUSD": { "type": "number" },
+        "totalUSD": { "type": "number" },
+        "totalLocal": { "type": "number" },
+        "exchangeRateUsed": { "type": "number" },
+        "currencyCode": { "type": "string", "maxLength": 10 },
+        "currencySymbol": { "type": "string", "maxLength": 10 },
+        "paymentMethods": { "type": "array" },
+        "amountReceivedUSD": { "type": "number" },
+        "changeGivenUSD": { "type": "number" },
+        "changeGivenLocal": { "type": "number" },
+        "status": { "type": "string", "enum": ["completed", "cancelled"] },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "invoiceNumber", "totalUSD", "status"]
+    },
+    "purchase": {
+      "title": "Purchase",
+      "description": "Supplier purchase order and merchandise restocking invoice",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "invoiceNumber": { "type": "string", "maxLength": 100 },
+        "date": { "type": "string" },
+        "supplierId": { "type": "string", "maxLength": 128 },
+        "supplierName": { "type": "string", "maxLength": 200 },
+        "items": { "type": "array" },
+        "totalUSD": { "type": "number" },
+        "totalLocal": { "type": "number" },
+        "exchangeRateUsed": { "type": "number" },
+        "paymentStatus": { "type": "string", "enum": ["paid", "pending"] },
+        "paymentMethod": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "scannedInvoiceUrl": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "invoiceNumber", "totalUSD", "paymentStatus"]
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Store configuration and operational parameters",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string", "maxLength": 200 },
+        "taxId": { "type": "string", "maxLength": 50 },
+        "address": { "type": "string", "maxLength": 300 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 150 },
+        "receiptFooter": { "type": "string", "maxLength": 300 },
+        "taxPercentage": { "type": "number" },
+        "exchangeRate": { "type": "number" },
+        "lastRateUpdate": { "type": "string" },
+        "autoUpdateRate": { "type": "boolean" }
+      },
+      "required": ["storeName", "exchangeRate"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "product",
+      "description": "Retail products catalog with stock and pricing"
+    },
+    "/customers/{customerId}": {
+      "schema": "customer",
+      "description": "Customer list with identification and balance"
+    },
+    "/suppliers/{supplierId}": {
+      "schema": "supplier",
+      "description": "Vendor and supplier list"
+    },
+    "/sales/{saleId}": {
+      "schema": "sale",
+      "description": "Completed and registered sales transactions"
+    },
+    "/purchases/{purchaseId}": {
+      "schema": "purchase",
+      "description": "Purchases and supplier replenishments"
+    },
+    "/settings/{settingId}": {
+      "schema": "settings",
+      "description": "Store preferences and exchange rate config"
+    }
+  }
+}

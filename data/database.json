@@ -1,0 +1,673 @@
+{
+  "settings": {
+    "storeName": "LICORERÍA EL BARINES, C. A. ",
+    "taxId": "J-40982314-8",
+    "address": "Av. Principal Bolívar, Local #42, Centro Comercial Mayorista",
+    "phone": "+58 414-555-0199 / +58 212-987-6543",
+    "email": "ventas@supermercadoxito.com",
+    "receiptFooter": "¡Gracias por su compra! Conserve su factura para cualquier reclamo o garantía. Válido por 7 días.",
+    "taxPercentage": 16,
+    "primaryCurrency": {
+      "code": "USD",
+      "symbol": "$",
+      "name": "Dólar Estadounidense"
+    },
+    "secondaryCurrency": {
+      "code": "VES",
+      "symbol": "Bs.",
+      "name": "Bolívar Digital"
+    },
+    "exchangeRate": 857.0058,
+    "lastRateUpdate": "2026-09-28T21:50:52.223Z",
+    "autoUpdateRate": true
+  },
+  "products": [
+    {
+      "id": "prod-1790634375227-cufb",
+      "name": "CARTUCHO 92K",
+      "sku": "92K",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 23.24,
+      "priceUSD": 31.37,
+      "stock": 1,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-5hc9",
+      "name": "CARTUCHO 670Y",
+      "sku": "670Y",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 19.64,
+      "priceUSD": 26.51,
+      "stock": 2,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-xmhp",
+      "name": "CARTUCHO 670M",
+      "sku": "670M",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 19.64,
+      "priceUSD": 26.51,
+      "stock": 2,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-v8bx",
+      "name": "CARTUCHO 670C",
+      "sku": "670C",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 19.64,
+      "priceUSD": 26.51,
+      "stock": 2,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-2w4h",
+      "name": "CARTUCHO 670K",
+      "sku": "670K",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 19.64,
+      "priceUSD": 26.51,
+      "stock": 2,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-dynh",
+      "name": "CARTUCHO 21K",
+      "sku": "21K",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 48.89,
+      "priceUSD": 66,
+      "stock": 3,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-unwo",
+      "name": "CARTUCHO PG210",
+      "sku": "PG210",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 73.5,
+      "priceUSD": 99.23,
+      "stock": 1,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-4j7d",
+      "name": "TONER CRG120",
+      "sku": "CRG120",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 64.5,
+      "priceUSD": 87.08,
+      "stock": 1,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-ljen",
+      "name": "TONER CE278A",
+      "sku": "CE278A",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 40.49,
+      "priceUSD": 54.66,
+      "stock": 6,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-j7ip",
+      "name": "TONER D111",
+      "sku": "D111",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 69,
+      "priceUSD": 93.15,
+      "stock": 2,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1790634375227-55rg",
+      "name": "TONER D101",
+      "sku": "D101",
+      "barcode": "",
+      "category": "General",
+      "costUSD": 67.5,
+      "priceUSD": 91.13,
+      "stock": 2,
+      "minStock": 5,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-1",
+      "name": "Harina de Maíz Precocida Harina PAN 1kg",
+      "sku": "HAR-PAN-001",
+      "barcode": "7591016000018",
+      "category": "Víveres",
+      "costUSD": 1.05,
+      "priceUSD": 1.45,
+      "stock": 64,
+      "minStock": 20,
+      "unit": "ud",
+      "description": "Harina de maíz blanco refinada tradicional"
+    },
+    {
+      "id": "prod-2",
+      "name": "Arroz Blanco Grano Largo Mary Especial 1kg",
+      "sku": "ARR-MRY-002",
+      "barcode": "7591024001025",
+      "category": "Víveres",
+      "costUSD": 1.15,
+      "priceUSD": 1.6,
+      "stock": 45,
+      "minStock": 15,
+      "unit": "ud",
+      "description": "Arroz enriquecido tipo I grano largo"
+    },
+    {
+      "id": "prod-3",
+      "name": "Aceite Vegetal Comestible Vatel 1 Litro",
+      "sku": "ACE-VAT-003",
+      "barcode": "7591035002031",
+      "category": "Víveres",
+      "costUSD": 2.4,
+      "priceUSD": 3.2,
+      "stock": 28,
+      "minStock": 10,
+      "unit": "lt",
+      "description": "Aceite puro de soya 100% libre de colesterol"
+    },
+    {
+      "id": "prod-4",
+      "name": "Pasta Larga Spaghetti Primor 1kg",
+      "sku": "PAS-PRM-004",
+      "barcode": "7591046003048",
+      "category": "Víveres",
+      "costUSD": 1.25,
+      "priceUSD": 1.8,
+      "stock": 50,
+      "minStock": 15,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-5",
+      "name": "Café Molido Gourmet Fama de América 500g",
+      "sku": "CAF-FAM-005",
+      "barcode": "7591057004052",
+      "category": "Café e Infusiones",
+      "costUSD": 3.2,
+      "priceUSD": 4.5,
+      "stock": 18,
+      "minStock": 8,
+      "unit": "ud",
+      "description": "Café 100% puro tostado y molido sabor intenso"
+    },
+    {
+      "id": "prod-6",
+      "name": "Leche Completa Pasteurizada Campestre 1 Litro",
+      "sku": "LEC-CMP-006",
+      "barcode": "7591068005069",
+      "category": "Lácteos",
+      "costUSD": 1.5,
+      "priceUSD": 2.1,
+      "stock": 12,
+      "minStock": 15,
+      "unit": "lt",
+      "description": "Leche pasteurizada con vitaminas A y D"
+    },
+    {
+      "id": "prod-7",
+      "name": "Queso Blanco Semiduro Llanero Pasteurizado 1kg",
+      "sku": "QUE-LLA-007",
+      "barcode": "7591079006076",
+      "category": "Charcutería",
+      "costUSD": 4.5,
+      "priceUSD": 6.2,
+      "stock": 9,
+      "minStock": 10,
+      "unit": "kg",
+      "description": "Queso blanco criollo ideal para rallar"
+    },
+    {
+      "id": "prod-8",
+      "name": "Jamón de Pierna Cocido Superior Plumrose 1kg",
+      "sku": "JAM-PLU-008",
+      "barcode": "7591080007083",
+      "category": "Charcutería",
+      "costUSD": 6.8,
+      "priceUSD": 9.5,
+      "stock": 7,
+      "minStock": 5,
+      "unit": "kg"
+    },
+    {
+      "id": "prod-9",
+      "name": "Refresco Coca Cola Original 2 Litros",
+      "sku": "BEB-COK-009",
+      "barcode": "7591091008090",
+      "category": "Bebidas",
+      "costUSD": 1.7,
+      "priceUSD": 2.5,
+      "stock": 35,
+      "minStock": 12,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-10",
+      "name": "Agua Mineral Minalba sin Gas 5 Litros",
+      "sku": "BEB-MIN-010",
+      "barcode": "7591102009106",
+      "category": "Bebidas",
+      "costUSD": 1.4,
+      "priceUSD": 2,
+      "stock": 40,
+      "minStock": 15,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-11",
+      "name": "Detergente en Polvo Multiusos Las Llaves 1kg",
+      "sku": "LIM-LLA-011",
+      "barcode": "7591113010113",
+      "category": "Limpieza",
+      "costUSD": 1.8,
+      "priceUSD": 2.6,
+      "stock": 22,
+      "minStock": 10,
+      "unit": "ud"
+    },
+    {
+      "id": "prod-12",
+      "name": "Jabón de Baño Protex Antibacterial 110g Pack x3",
+      "sku": "HIG-PRX-012",
+      "barcode": "7591124011120",
+      "category": "Higiene Personal",
+      "costUSD": 2.1,
+      "priceUSD": 3,
+      "stock": 14,
+      "minStock": 8,
+      "unit": "paq"
+    },
+    {
+      "id": "prod-13",
+      "name": "Cargador Rápido USB-C 20W Universal",
+      "sku": "TEC-CAR-013",
+      "barcode": "7591135012137",
+      "category": "Tecnología",
+      "costUSD": 3.5,
+      "priceUSD": 6.5,
+      "stock": 16,
+      "minStock": 5,
+      "unit": "ud"
+    }
+  ],
+  "suppliers": [
+    {
+      "name": "VENSPEED, C.A.",
+      "taxId": "J-40137367-4",
+      "phone": "0414-3343504",
+      "email": "",
+      "address": "Av. Primera Av. Norte-Sur, Edif. Terepaima, Piso 7, Local 707, Sector El Dorado entre Segunda Transversal y Av. José Félix Sosa, Chacao, Caracas, Miranda, Venezuela",
+      "paymentTerms": "Contado",
+      "id": "sup-1790634375144"
+    },
+    {
+      "id": "sup-1",
+      "name": "Alimentos Polar Comercial C.A.",
+      "taxId": "J-00041372-9",
+      "phone": "+58 212-202-3111",
+      "email": "pedidos@empresaspolar.com",
+      "address": "Edif. Polar, Los Cortijos de Lourdes, Caracas",
+      "paymentTerms": "Crédito 15 días",
+      "notes": "Distribuidor mayorista de Harina PAN, Pastas Primor, Mantequilla Mavesa"
+    },
+    {
+      "id": "sup-2",
+      "name": "Distribuidora Mayorista Los Andes",
+      "taxId": "J-31456789-0",
+      "phone": "+58 414-301-4422",
+      "email": "ventas@losandesdist.com",
+      "address": "Zona Industrial San Vicente II, Galpón 4",
+      "paymentTerms": "Contado contra entrega",
+      "notes": "Proveedor de lácteos, quesos y embutidos Plumrose"
+    },
+    {
+      "id": "sup-3",
+      "name": "Coca-Cola FEMSA Distribución",
+      "taxId": "J-30012485-6",
+      "phone": "+58 800-2622265",
+      "email": "atencion@kof.com.ve",
+      "address": "Zona Industrial La Bandera, Caracas",
+      "paymentTerms": "Crédito 7 días",
+      "notes": "Bebidas carbonatadas y aguas Minalba"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cus-1",
+      "name": "Cliente Casual (Venta Mostrador)",
+      "taxId": "V-00000000",
+      "phone": "N/A",
+      "email": "",
+      "address": "Mostrador",
+      "creditLimitUSD": 0,
+      "currentDebtUSD": 0
+    },
+    {
+      "id": "cus-2",
+      "name": "Restaurante El Rincón Criollo C.A.",
+      "taxId": "J-40112345-2",
+      "phone": "+58 412-889-1022",
+      "email": "compras@elrinconcriollo.com",
+      "address": "Calle Sucre c/c Miranda, Casco Histórico",
+      "creditLimitUSD": 300,
+      "currentDebtUSD": 74.5,
+      "notes": "Cliente recurrente con línea de crédito autorizada"
+    },
+    {
+      "id": "cus-3",
+      "name": "María Elena Rodríguez",
+      "taxId": "V-16.789.432",
+      "phone": "+58 416-712-4455",
+      "email": "maria.rodriguez16@gmail.com",
+      "address": "Urb. Las Acacias, Edif. Gardenia, Apto 4-B",
+      "creditLimitUSD": 50,
+      "currentDebtUSD": 18.2,
+      "notes": "Vecina de la zona - Pagos por Pago Móvil"
+    },
+    {
+      "id": "cus-4",
+      "name": "Inversiones Panadería El Trigal",
+      "taxId": "J-50123984-1",
+      "phone": "+58 424-918-2233",
+      "email": "gerencia@eltrigalpan.com",
+      "address": "Av. Universidad c/ Av. Fuerzas Armadas",
+      "creditLimitUSD": 500,
+      "currentDebtUSD": 0,
+      "notes": "Compra por bultos semanalmente"
+    }
+  ],
+  "sales": [
+    {
+      "id": "sale-1001",
+      "invoiceNumber": "FACT-001001",
+      "date": "2026-09-28T16:42:14.470Z",
+      "customerId": "cus-2",
+      "customerName": "Restaurante El Rincón Criollo C.A.",
+      "customerTaxId": "J-40112345-2",
+      "items": [
+        {
+          "productId": "prod-1",
+          "productName": "Harina de Maíz Precocida Harina PAN 1kg",
+          "sku": "HAR-PAN-001",
+          "quantity": 10,
+          "unitPriceUSD": 1.45,
+          "subtotalUSD": 14.5,
+          "costUSD": 1.05
+        },
+        {
+          "productId": "prod-3",
+          "productName": "Aceite Vegetal Comestible Vatel 1 Litro",
+          "sku": "ACE-VAT-003",
+          "quantity": 4,
+          "unitPriceUSD": 3.2,
+          "subtotalUSD": 12.8,
+          "costUSD": 2.4
+        },
+        {
+          "productId": "prod-7",
+          "productName": "Queso Blanco Semiduro Llanero Pasteurizado 1kg",
+          "sku": "QUE-LLA-007",
+          "quantity": 3,
+          "unitPriceUSD": 6.2,
+          "subtotalUSD": 18.6,
+          "costUSD": 4.5
+        }
+      ],
+      "subtotalUSD": 45.9,
+      "discountUSD": 0,
+      "taxUSD": 7.34,
+      "totalUSD": 53.24,
+      "totalLocal": 2789.78,
+      "exchangeRateUsed": 52.4,
+      "currencyCode": "VES",
+      "currencySymbol": "Bs.",
+      "paymentMethods": [
+        {
+          "gateway": "mobile_payment",
+          "gatewayName": "Pago Móvil Banesco",
+          "amountUSD": 53.24,
+          "amountLocal": 2789.78,
+          "reference": "PM-9812401",
+          "bank": "Banesco Banco Universal"
+        }
+      ],
+      "amountReceivedUSD": 53.24,
+      "changeGivenUSD": 0,
+      "changeGivenLocal": 0,
+      "status": "completed",
+      "notes": "Pedido despachado a cocina"
+    },
+    {
+      "id": "sale-1002",
+      "invoiceNumber": "FACT-001002",
+      "date": "2026-09-28T19:42:14.470Z",
+      "customerId": "cus-1",
+      "customerName": "Cliente Casual (Venta Mostrador)",
+      "items": [
+        {
+          "productId": "prod-9",
+          "productName": "Refresco Coca Cola Original 2 Litros",
+          "sku": "BEB-COK-009",
+          "quantity": 2,
+          "unitPriceUSD": 2.5,
+          "subtotalUSD": 5,
+          "costUSD": 1.7
+        },
+        {
+          "productId": "prod-5",
+          "productName": "Café Molido Gourmet Fama de América 500g",
+          "sku": "CAF-FAM-005",
+          "quantity": 1,
+          "unitPriceUSD": 4.5,
+          "subtotalUSD": 4.5,
+          "costUSD": 3.2
+        }
+      ],
+      "subtotalUSD": 9.5,
+      "discountUSD": 0,
+      "taxUSD": 1.52,
+      "totalUSD": 11.02,
+      "totalLocal": 577.45,
+      "exchangeRateUsed": 52.4,
+      "currencyCode": "VES",
+      "currencySymbol": "Bs.",
+      "paymentMethods": [
+        {
+          "gateway": "cash_usd",
+          "gatewayName": "Efectivo Divisas ($)",
+          "amountUSD": 11.02,
+          "amountLocal": 577.45
+        }
+      ],
+      "amountReceivedUSD": 20,
+      "changeGivenUSD": 8.98,
+      "changeGivenLocal": 470.55,
+      "status": "completed"
+    }
+  ],
+  "purchases": [
+    {
+      "invoiceNumber": "B00000414",
+      "date": "2019-04-22T00:00:00.000Z",
+      "supplierId": "sup-1790634375144",
+      "supplierName": "VENSPEED, C.A.",
+      "items": [
+        {
+          "productId": "prod-1790634375227-55rg",
+          "productName": "TONER D101",
+          "sku": "D101",
+          "quantity": 2,
+          "unitCostUSD": 67.5,
+          "totalCostUSD": 135
+        },
+        {
+          "productId": "prod-1790634375227-j7ip",
+          "productName": "TONER D111",
+          "sku": "D111",
+          "quantity": 2,
+          "unitCostUSD": 69,
+          "totalCostUSD": 138
+        },
+        {
+          "productId": "prod-1790634375227-ljen",
+          "productName": "TONER CE278A",
+          "sku": "CE278A",
+          "quantity": 6,
+          "unitCostUSD": 40.49,
+          "totalCostUSD": 242.94
+        },
+        {
+          "productId": "prod-1790634375227-4j7d",
+          "productName": "TONER CRG120",
+          "sku": "CRG120",
+          "quantity": 1,
+          "unitCostUSD": 64.5,
+          "totalCostUSD": 64.5
+        },
+        {
+          "productId": "prod-1790634375227-unwo",
+          "productName": "CARTUCHO PG210",
+          "sku": "PG210",
+          "quantity": 1,
+          "unitCostUSD": 73.5,
+          "totalCostUSD": 73.5
+        },
+        {
+          "productId": "prod-1790634375227-dynh",
+          "productName": "CARTUCHO 21K",
+          "sku": "21K",
+          "quantity": 3,
+          "unitCostUSD": 48.89,
+          "totalCostUSD": 146.67
+        },
+        {
+          "productId": "prod-1790634375227-2w4h",
+          "productName": "CARTUCHO 670K",
+          "sku": "670K",
+          "quantity": 2,
+          "unitCostUSD": 19.64,
+          "totalCostUSD": 39.28
+        },
+        {
+          "productId": "prod-1790634375227-v8bx",
+          "productName": "CARTUCHO 670C",
+          "sku": "670C",
+          "quantity": 2,
+          "unitCostUSD": 19.64,
+          "totalCostUSD": 39.28
+        },
+        {
+          "productId": "prod-1790634375227-xmhp",
+          "productName": "CARTUCHO 670M",
+          "sku": "670M",
+          "quantity": 2,
+          "unitCostUSD": 19.64,
+          "totalCostUSD": 39.28
+        },
+        {
+          "productId": "prod-1790634375227-5hc9",
+          "productName": "CARTUCHO 670Y",
+          "sku": "670Y",
+          "quantity": 2,
+          "unitCostUSD": 19.64,
+          "totalCostUSD": 39.28
+        },
+        {
+          "productId": "prod-1790634375227-cufb",
+          "productName": "CARTUCHO 92K",
+          "sku": "92K",
+          "quantity": 1,
+          "unitCostUSD": 23.24,
+          "totalCostUSD": 23.24
+        }
+      ],
+      "totalUSD": 980.97,
+      "totalLocal": 840696.98,
+      "exchangeRateUsed": 857.0058,
+      "paymentStatus": "paid",
+      "paymentMethod": "Factura / Escáner IA",
+      "notes": "Factura B00000414. Moneda: VES (Bs.). Tasa: 857.0058 Bs./USD. Registrada con escáner inteligente.",
+      "id": "pur-1790634375228"
+    },
+    {
+      "id": "pur-501",
+      "invoiceNumber": "FAC-POLAR-88910",
+      "date": "2026-09-26T21:42:14.470Z",
+      "supplierId": "sup-1",
+      "supplierName": "Alimentos Polar Comercial C.A.",
+      "items": [
+        {
+          "productId": "prod-1",
+          "productName": "Harina de Maíz Precocida Harina PAN 1kg",
+          "sku": "HAR-PAN-001",
+          "quantity": 100,
+          "unitCostUSD": 1.05,
+          "totalCostUSD": 105
+        },
+        {
+          "productId": "prod-4",
+          "productName": "Pasta Larga Spaghetti Primor 1kg",
+          "sku": "PAS-PRM-004",
+          "quantity": 60,
+          "unitCostUSD": 1.25,
+          "totalCostUSD": 75
+        }
+      ],
+      "totalUSD": 180,
+      "totalLocal": 9432,
+      "exchangeRateUsed": 52.4,
+      "paymentStatus": "paid",
+      "paymentMethod": "Transferencia Bancaria",
+      "notes": "Entregado por camión Polar N° 14"
+    }
+  ],
+  "lastSyncedAt": "2026-09-28T22:26:16.299Z",
+  "license": {
+    "systemId": "OMNI-E28E-UDDJ",
+    "type": "demo",
+    "licenseKey": "OMNI-DEMO-15D-WATU-8NK7",
+    "licensedTo": "LICORERÍA EL BARINES, C. A. ",
+    "issuedAt": "2026-09-28T22:31:17.746Z",
+    "activatedAt": "2026-09-28T22:31:17.746Z",
+    "expiresAt": "2026-10-13T22:31:17.746Z",
+    "features": [
+      "Punto de Venta Ilimitado (POS y códigos de barras)",
+      "Escáner Inteligente de Facturas con IA",
+      "Control de Inventario y Kardex de Stock",
+      "Gestión Multimoneda (USD, Bolívares y Tasa Oficial)",
+      "Gestión de Clientes, Créditos y Fiados",
+      "Gestión de Proveedores y Compras al Mayor",
+      "Reportes Financieros, Cierre de Caja y Ganancias",
+      "Sincronización en la Nube y Terminales Móviles"
+    ],
+    "status": "active",
+    "notes": "Versión Demo de evaluación completa por 15 días con todas las funciones habilitadas."
+  }
+}

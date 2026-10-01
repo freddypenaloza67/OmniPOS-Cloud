@@ -1,0 +1,129 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default-deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'ddanez.fact.dist@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Validation Helpers
+    function isValidProduct(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.priceUSD is number && data.priceUSD >= 0 &&
+             data.stock is number;
+    }
+
+    function isValidCustomer(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.taxId is string && data.taxId.size() > 0 && data.taxId.size() <= 50;
+    }
+
+    function isValidSupplier(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.taxId is string && data.taxId.size() > 0 && data.taxId.size() <= 50;
+    }
+
+    function isValidSale(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.invoiceNumber is string && data.invoiceNumber.size() > 0 && data.invoiceNumber.size() <= 100 &&
+             data.totalUSD is number && data.totalUSD >= 0 &&
+             (data.status == 'completed' || data.status == 'cancelled');
+    }
+
+    function isValidPurchase(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.invoiceNumber is string && data.invoiceNumber.size() > 0 && data.invoiceNumber.size() <= 100 &&
+             data.totalUSD is number && data.totalUSD >= 0 &&
+             (data.paymentStatus == 'paid' || data.paymentStatus == 'pending');
+    }
+
+    function isValidSettings(data) {
+      return data.storeName is string && data.storeName.size() > 0 && data.storeName.size() <= 200 &&
+             data.exchangeRate is number && data.exchangeRate > 0;
+    }
+
+    // Products Collection
+    match /products/{productId} {
+      allow read: if true;
+      allow create: if isValidId(productId) && isValidProduct(incoming());
+      allow update: if isValidId(productId) && isValidProduct(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Customers Collection
+    match /customers/{customerId} {
+      allow read: if true;
+      allow create: if isValidId(customerId) && isValidCustomer(incoming());
+      allow update: if isValidId(customerId) && isValidCustomer(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Suppliers Collection
+    match /suppliers/{supplierId} {
+      allow read: if true;
+      allow create: if isValidId(supplierId) && isValidSupplier(incoming());
+      allow update: if isValidId(supplierId) && isValidSupplier(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Sales Collection (Audit Trail: Deletes Forbidden)
+    match /sales/{saleId} {
+      allow read: if true;
+      allow create: if isValidId(saleId) && isValidSale(incoming());
+      allow update: if isValidId(saleId) && isValidSale(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'notes'])
+      );
+      allow delete: if false; // Immutable sales ledger
+    }
+
+    // Purchases Collection
+    match /purchases/{purchaseId} {
+      allow read: if true;
+      allow create: if isValidId(purchaseId) && isValidPurchase(incoming());
+      allow update: if isValidId(purchaseId) && isValidPurchase(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['paymentStatus', 'notes'])
+      );
+      allow delete: if false;
+    }
+
+    // Settings Collection
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update: if isValidId(settingId) && isValidSettings(incoming());
+      allow delete: if false;
+    }
+
+    // Connection validation collection for bootstrap
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}

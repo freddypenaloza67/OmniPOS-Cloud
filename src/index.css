@@ -1,0 +1,310 @@
+@import "tailwindcss";
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ========================================================================= */
+/* 3D CLAYMORPHIC THEME SYSTEM (LIGHT / DARK / EYE CARE)                     */
+/* ========================================================================= */
+
+:root, [data-theme="light"] {
+  --bg-app: #eef2f7;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --nav-bg: rgba(255, 255, 255, 0.88);
+  
+  --clay-card-bg: #ffffff;
+  --clay-card-border: rgba(255, 255, 255, 0.95);
+  --clay-card-shadow: 
+    0 16px 32px -8px rgba(15, 23, 42, 0.08),
+    0 6px 14px -4px rgba(15, 23, 42, 0.04),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.95),
+    inset -4px -4px 8px rgba(15, 23, 42, 0.06);
+
+  --clay-subtle-bg: #f8fafc;
+  --clay-subtle-border: rgba(226, 232, 240, 0.8);
+  --clay-subtle-shadow: 
+    inset 2px 2px 5px rgba(15, 23, 42, 0.05),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+
+  --clay-input-bg: #f8fafc;
+  --clay-input-border: rgba(203, 213, 225, 0.8);
+  --clay-input-shadow: 
+    inset 2px 2px 5px rgba(15, 23, 42, 0.07),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+
+  --clay-dark-card-bg: linear-gradient(145deg, #1e293b, #0f172a);
+  --clay-dark-card-border: rgba(255, 255, 255, 0.12);
+  --clay-dark-card-shadow: 
+    0 16px 32px -8px rgba(15, 23, 42, 0.25),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.15),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] {
+  --bg-app: #080c14;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --nav-bg: rgba(15, 23, 42, 0.88);
+
+  --clay-card-bg: linear-gradient(145deg, #161f30, #0f172a);
+  --clay-card-border: rgba(255, 255, 255, 0.08);
+  --clay-card-shadow: 
+    0 20px 40px -8px rgba(0, 0, 0, 0.65),
+    0 8px 16px -4px rgba(0, 0, 0, 0.45),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.09),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.5);
+
+  --clay-subtle-bg: #0b111e;
+  --clay-subtle-border: rgba(255, 255, 255, 0.05);
+  --clay-subtle-shadow: 
+    inset 2px 2px 6px rgba(0, 0, 0, 0.6),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+
+  --clay-input-bg: #090e18;
+  --clay-input-border: rgba(255, 255, 255, 0.1);
+  --clay-input-shadow: 
+    inset 3px 3px 6px rgba(0, 0, 0, 0.7),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+
+  --clay-dark-card-bg: linear-gradient(145deg, #1a2336, #0d1424);
+  --clay-dark-card-border: rgba(255, 255, 255, 0.1);
+  --clay-dark-card-shadow: 
+    0 20px 40px -8px rgba(0, 0, 0, 0.7),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.12),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="eyecare"] {
+  /* Descanso Ocular: Cálido sepia/marfil, luz azul reducida */
+  --bg-app: #f7f2e8;
+  --text-main: #2b2014;
+  --text-muted: #7d6e5d;
+  --nav-bg: rgba(253, 251, 247, 0.92);
+
+  --clay-card-bg: #fdfbf7;
+  --clay-card-border: rgba(255, 255, 255, 0.95);
+  --clay-card-shadow: 
+    0 16px 32px -8px rgba(100, 75, 45, 0.08),
+    0 6px 14px -4px rgba(100, 75, 45, 0.04),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.98),
+    inset -4px -4px 8px rgba(120, 95, 55, 0.06);
+
+  --clay-subtle-bg: #f4ecdf;
+  --clay-subtle-border: rgba(215, 200, 180, 0.6);
+  --clay-subtle-shadow: 
+    inset 2px 2px 5px rgba(100, 75, 45, 0.06),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+
+  --clay-input-bg: #f4ecdf;
+  --clay-input-border: rgba(200, 185, 165, 0.8);
+  --clay-input-shadow: 
+    inset 2px 2px 5px rgba(100, 75, 45, 0.08),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+
+  --clay-dark-card-bg: linear-gradient(145deg, #382c1f, #231b12);
+  --clay-dark-card-border: rgba(255, 255, 255, 0.12);
+  --clay-dark-card-shadow: 
+    0 16px 32px -8px rgba(35, 27, 18, 0.35),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.15),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================================================= */
+/* 3D CLAYMORPHIC UTILITY CLASSES                                            */
+/* ========================================================================= */
+
+.clay-card {
+  border-radius: 1.5rem;
+  background: var(--clay-card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--clay-card-border);
+  box-shadow: var(--clay-card-shadow);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-card:hover {
+  transform: translateY(-2px);
+}
+
+.clay-card-subtle {
+  border-radius: 1.25rem;
+  background: var(--clay-subtle-bg);
+  border: 1px solid var(--clay-subtle-border);
+  box-shadow: var(--clay-subtle-shadow);
+}
+
+.clay-card-dark {
+  border-radius: 1.5rem;
+  background: var(--clay-dark-card-bg);
+  color: #ffffff;
+  border: 1px solid var(--clay-dark-card-border);
+  box-shadow: var(--clay-dark-card-shadow);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-input {
+  border-radius: 1rem;
+  background: var(--clay-input-bg);
+  color: var(--text-main);
+  border: 1px solid var(--clay-input-border);
+  box-shadow: var(--clay-input-shadow);
+  transition: all 0.15s ease-out;
+}
+
+.clay-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: var(--clay-input-shadow), 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Buttons */
+.clay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn:active {
+  transform: translateY(2px) scale(0.98);
+}
+
+.clay-btn-emerald {
+  background: linear-gradient(145deg, #10b981, #059669);
+  color: #ffffff;
+  box-shadow: 
+    0 10px 24px -4px rgba(16, 185, 129, 0.45),
+    0 4px 10px -2px rgba(16, 185, 129, 0.25),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.65),
+    inset -4px -4px 8px rgba(4, 120, 87, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.clay-btn-emerald:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 14px 28px -4px rgba(16, 185, 129, 0.55),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.75),
+    inset -4px -4px 8px rgba(4, 120, 87, 0.35);
+}
+
+.clay-btn-emerald:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 
+    0 4px 8px -2px rgba(16, 185, 129, 0.3),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.3),
+    inset 3px 3px 7px rgba(4, 120, 87, 0.5);
+}
+
+.clay-btn-amber {
+  background: linear-gradient(145deg, #fbbf24, #d97706);
+  color: #0f172a;
+  box-shadow: 
+    0 10px 24px -4px rgba(245, 158, 11, 0.45),
+    0 4px 10px -2px rgba(245, 158, 11, 0.25),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.75),
+    inset -4px -4px 8px rgba(180, 83, 9, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn-purple {
+  background: linear-gradient(145deg, #a855f7, #7e22ce);
+  color: #ffffff;
+  box-shadow: 
+    0 10px 24px -4px rgba(147, 51, 234, 0.45),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.6),
+    inset -4px -4px 8px rgba(88, 28, 135, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.clay-btn-rose {
+  background: linear-gradient(145deg, #f43f5e, #be123c);
+  color: #ffffff;
+  box-shadow: 
+    0 10px 24px -4px rgba(244, 63, 94, 0.45),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.6),
+    inset -4px -4px 8px rgba(159, 18, 57, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.clay-btn-surface {
+  background: var(--clay-card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--clay-card-border);
+  box-shadow: 
+    0 6px 14px -3px rgba(0, 0, 0, 0.08),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.clay-btn-surface:hover {
+  transform: translateY(-1px);
+}
+
+.clay-btn-surface:active {
+  transform: translateY(1px);
+}
+
+.clay-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  box-shadow: 
+    0 4px 10px -2px rgba(15, 23, 42, 0.06),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 4px rgba(15, 23, 42, 0.08);
+}
+
+/* Thermal POS Printer Optimization */
+@media print {
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide everything on screen except the thermal receipt container */
+  body * {
+    visibility: hidden !important;
+  }
+
+  #thermal-print-area,
+  #thermal-print-area * {
+    visibility: visible !important;
+  }
+
+  #thermal-print-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 80mm !important;
+    margin: 0 auto !important;
+    padding: 3mm 2mm 15mm 2mm !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
