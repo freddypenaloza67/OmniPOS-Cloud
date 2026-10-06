@@ -127,16 +127,9 @@ export function generateLicenseKey(type: LicenseType, customSeed?: string): stri
   
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let rand = '';
-  if (customSeed) {
-    let h = 0;
-    for (let i = 0; i < customSeed.length; i++) h = (h * 31 + customSeed.charCodeAt(i)) & 0xffffffff;
-    for (let i = 0; i < 4; i++) {
-      rand += chars.charAt(Math.abs((h >> (i * 7)) % chars.length));
-    }
-  } else {
-    for (let i = 0; i < 4; i++) {
-      rand += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+  // Generate a cryptographically randomized 4-char token so each issued key is uniquely minted
+  for (let i = 0; i < 4; i++) {
+    rand += chars.charAt(Math.floor(Math.random() * chars.length));
   }
 
   const base = `OMNI-${code}-${durationTag}-${rand}`;
@@ -220,7 +213,8 @@ export function createDefaultDemoLicense(
     expiresAt,
     features: ALL_FEATURES,
     status: 'active',
-    notes: 'Versión Demo de evaluación completa por 15 días con todas las funciones habilitadas.'
+    notes: 'Versión Demo de evaluación completa por 15 días con todas las funciones habilitadas.',
+    usedKeys: []
   };
 }
 
@@ -335,9 +329,29 @@ export function activateLicenseKeyOnData(
   currentLicense: LicenseData,
   licensedTo?: string
 ): { success: boolean; newLicense?: LicenseData; message: string } {
-  const validation = validateLicenseKey(key);
+  const cleanKey = key.trim().toUpperCase();
+  const validation = validateLicenseKey(cleanKey);
   if (!validation.valid || !validation.type) {
     return { success: false, message: validation.error || 'Clave de licencia inválida.' };
+  }
+
+  // Security Check 1: Key already actively running on this machine (and not expired)
+  const currentActiveKey = currentLicense.licenseKey?.trim().toUpperCase();
+  const isCurrentlyExpired = currentLicense.expiresAt && new Date(currentLicense.expiresAt).getTime() <= Date.now();
+  if (currentActiveKey && currentActiveKey === cleanKey && !isCurrentlyExpired && currentLicense.type !== 'demo') {
+    return {
+      success: false,
+      message: 'Esta clave de licencia ya se encuentra actualmente activa en este equipo.'
+    };
+  }
+
+  // Security Check 2: Key was already redeemed / consumed previously in the system history
+  const usedKeys = currentLicense.usedKeys || (currentActiveKey && currentLicense.type !== 'demo' ? [currentActiveKey] : []);
+  if (usedKeys.includes(cleanKey)) {
+    return {
+      success: false,
+      message: 'Esta clave de licencia ya fue canjeada y consumida con anterioridad en este equipo. Cada clave oficial es de un solo uso comercial. Para renovar o extender su período, solicite una nueva clave oficial a su distribuidor.'
+    };
   }
 
   const newType = validation.type;
@@ -350,9 +364,9 @@ export function activateLicenseKeyOnData(
   } else {
     const durationDays = validation.durationDays || 30;
     
-    // If renewing the same non-expired type, extend from current expiry date, otherwise from now
+    // If legitimate renewal with a new unspent key while an active non-demo plan has days remaining, extend from current expiry date, otherwise from now
     let baseTime = now.getTime();
-    if (currentLicense.type === newType && currentLicense.expiresAt) {
+    if (currentLicense.type !== 'demo' && currentLicense.expiresAt) {
       const curExpiry = new Date(currentLicense.expiresAt).getTime();
       if (curExpiry > baseTime) {
         baseTime = curExpiry;
@@ -363,17 +377,21 @@ export function activateLicenseKeyOnData(
     expiresAt = newExpiry.toISOString();
   }
 
+  // Track the consumed key in usedKeys history to permanently prevent stacking
+  const updatedUsedKeys = Array.from(new Set([...usedKeys, cleanKey]));
+
   const plan = LICENSE_PLANS.find(p => p.id === newType);
   const newLicense: LicenseData = {
     ...currentLicense,
     type: newType,
-    licenseKey: key.trim().toUpperCase(),
+    licenseKey: cleanKey,
     licensedTo: licensedTo || currentLicense.licensedTo,
     activatedAt,
     expiresAt,
     status: 'active',
     features: plan?.features || ALL_FEATURES,
-    notes: `Licencia ${plan?.name || newType} activada exitosamente el ${now.toLocaleDateString('es-VE')}.`
+    notes: `Licencia ${plan?.name || newType} activada exitosamente el ${now.toLocaleDateString('es-VE')}.`,
+    usedKeys: updatedUsedKeys
   };
 
   return {

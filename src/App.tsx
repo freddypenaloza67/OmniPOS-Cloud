@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
-import { Navbar, NavView } from './components/Navbar';
+import { Navbar } from './components/Navbar';
+import { NavView } from './types';
 import { DashboardView } from './components/DashboardView';
 import { PosView } from './components/PosView';
 import { PurchasesView } from './components/PurchasesView';
@@ -11,11 +12,42 @@ import { ReportsView } from './components/ReportsView';
 import { SettingsView } from './components/SettingsView';
 import { LicenseBanner } from './components/LicenseBanner';
 import { Footer } from './components/Footer';
+import { UserPinModal } from './components/UserPinModal';
+import { hasModulePermission, MODULE_REQUIRED_ROLE, MODULE_NAMES } from './utils/permissionUtils';
 import { Loader2 } from 'lucide-react';
 
 const MainContent: React.FC = () => {
-  const { loading, theme } = useStore();
+  const { loading, theme, currentUser } = useStore();
   const [currentView, setCurrentView] = useState<NavView>('dashboard');
+  
+  // Permission PIN Modal prompt for restricted modules
+  const [pinPrompt, setPinPrompt] = useState<{
+    isOpen: boolean;
+    targetView?: NavView;
+    requiredRole?: 'admin' | 'supervisor';
+  }>({
+    isOpen: false
+  });
+
+  const handleNavigate = (view: NavView) => {
+    if (hasModulePermission(currentUser, view)) {
+      setCurrentView(view);
+    } else {
+      const requiredRole = MODULE_REQUIRED_ROLE[view] || 'supervisor';
+      setPinPrompt({
+        isOpen: true,
+        targetView: view,
+        requiredRole
+      });
+    }
+  };
+
+  // If active user changes (e.g. switched to Cajero), verify that currentView is allowed
+  useEffect(() => {
+    if (!hasModulePermission(currentUser, currentView)) {
+      setCurrentView('pos');
+    }
+  }, [currentUser, currentView]);
 
   // Keyboard navigation shortcuts
   useEffect(() => {
@@ -26,21 +58,21 @@ const MainContent: React.FC = () => {
       }
       if (e.key === 'F1') {
         e.preventDefault();
-        setCurrentView('pos');
+        handleNavigate('pos');
       } else if (e.key === 'F2') {
         e.preventDefault();
-        setCurrentView('dashboard');
+        handleNavigate('dashboard');
       } else if (e.key === 'F3') {
         e.preventDefault();
-        setCurrentView('purchases');
+        handleNavigate('purchases');
       } else if (e.key === 'F4') {
         e.preventDefault();
-        setCurrentView('inventory');
+        handleNavigate('inventory');
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [currentUser]);
 
   if (loading) {
     return (
@@ -65,14 +97,14 @@ const MainContent: React.FC = () => {
         : 'bg-[#eef2f7] text-slate-900'
     }`}>
       {/* Top Navbar */}
-      <Navbar currentView={currentView} onNavigate={setCurrentView} />
+      <Navbar currentView={currentView} onNavigate={handleNavigate} />
 
       {/* License Expiration Banner */}
       <LicenseBanner />
 
       {/* Main View Area */}
       <main className="flex-1">
-        {currentView === 'dashboard' && <DashboardView onNavigate={setCurrentView} />}
+        {currentView === 'dashboard' && <DashboardView onNavigate={handleNavigate} />}
         {currentView === 'pos' && <PosView />}
         {currentView === 'purchases' && <PurchasesView />}
         {currentView === 'inventory' && <InventoryView />}
@@ -81,6 +113,21 @@ const MainContent: React.FC = () => {
         {currentView === 'reports' && <ReportsView />}
         {currentView === 'settings' && <SettingsView />}
       </main>
+
+      {/* Permission Authorization PIN Modal */}
+      <UserPinModal
+        isOpen={pinPrompt.isOpen}
+        onClose={() => setPinPrompt({ isOpen: false })}
+        requiredRole={pinPrompt.requiredRole}
+        targetView={pinPrompt.targetView}
+        title="Acceso Restringido - Autorización"
+        subtitle={pinPrompt.targetView ? `Ingrese PIN para desbloquear ${MODULE_NAMES[pinPrompt.targetView]}` : undefined}
+        onSuccess={() => {
+          if (pinPrompt.targetView) {
+            setCurrentView(pinPrompt.targetView);
+          }
+        }}
+      />
 
       {/* Developer Footer */}
       <Footer />

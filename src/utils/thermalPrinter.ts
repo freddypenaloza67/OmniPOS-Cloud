@@ -163,6 +163,10 @@ export function printThermalReceipt(
         <div class="dashed"></div>
 
         <!-- Totals -->
+        <div class="flex-between">
+          <span>${settings.taxCalculationMode === 'additional' ? 'Base Imponible (Neta):' : 'Base Imponible:'}</span>
+          <span>$${sale.subtotalUSD.toFixed(2)}</span>
+        </div>
         ${!isAbono && sale.discountUSD > 0 ? `
           <div class="flex-between">
             <span>Descuento:</span>
@@ -171,7 +175,7 @@ export function printThermalReceipt(
         ` : ''}
         ${!isAbono && sale.taxUSD > 0 ? `
           <div class="flex-between">
-            <span>IVA (${settings.taxPercentage}%):</span>
+            <span>IVA (${settings.taxPercentage}%${settings.taxCalculationMode !== 'additional' ? ' Inc.' : ''}):</span>
             <span>$${sale.taxUSD.toFixed(2)}</span>
           </div>
         ` : ''}

@@ -1,8 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { 
-  getFirestore, 
-  enableIndexedDbPersistence, 
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
   doc, 
   getDocFromServer,
   collection,
@@ -16,26 +17,15 @@ import firebaseConfig from '../../firebase-applet-config.json';
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
 
-// CRITICAL: Initialize Firestore with specific database ID from config
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// Initialize Firestore with modern multi-tab offline cache and specific database ID
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+}, firebaseConfig.firestoreDatabaseId);
+
 export const auth = getAuth(app);
 
-// Enable Offline Persistence for Cashier & POS Terminal Resilience
-try {
-  enableIndexedDbPersistence(db).then(() => {
-    console.log('Firebase Firestore offline persistence activated successfully.');
-  }).catch((err) => {
-    if (err.code === 'failed-precondition') {
-      console.warn('Multiple tabs open, persistence enabled only in primary tab.');
-    } else if (err.code === 'unimplemented') {
-      console.warn('Current browser does not support offline IndexedDb persistence.');
-    } else {
-      console.warn('Persistence error:', err);
-    }
-  });
-} catch (e) {
-  console.warn('Could not initialize offline persistence:', e);
-}
 
 // Structured Error Handling as required by Firebase Integration Skill
 export enum OperationType {

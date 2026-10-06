@@ -228,9 +228,12 @@ export async function syncSettingsToFirestore(settings: StoreSettings): Promise<
       email: settings.email || '',
       receiptFooter: settings.receiptFooter || '',
       taxPercentage: Number(settings.taxPercentage) || 0,
-      exchangeRate: Number(settings.exchangeRate) || 1,
+      taxCalculationMode: settings.taxCalculationMode || 'included',
+      exchangeRate: Number(settings.exchangeRate) > 0 ? Number(settings.exchangeRate) : 52.40,
       lastRateUpdate: settings.lastRateUpdate || new Date().toISOString(),
-      autoUpdateRate: Boolean(settings.autoUpdateRate)
+      autoUpdateRate: Boolean(settings.autoUpdateRate),
+      primaryCurrency: settings.primaryCurrency || { code: 'USD', symbol: '$', name: 'Dólar Estadounidense' },
+      secondaryCurrency: settings.secondaryCurrency || { code: 'VES', symbol: 'Bs.', name: 'Bolívar Digital' }
     });
     await setDoc(doc(db, 'settings', 'general'), payload, { merge: true });
   } catch (error) {
@@ -376,16 +379,19 @@ export function subscribeToFirestoreUpdates(
       const data = docSnap.data();
       onData({
         settings: {
-          storeName: data.storeName,
-          taxId: data.taxId,
-          address: data.address,
-          phone: data.phone,
-          email: data.email,
-          receiptFooter: data.receiptFooter,
-          taxPercentage: data.taxPercentage,
-          exchangeRate: data.exchangeRate,
-          lastRateUpdate: data.lastRateUpdate,
-          autoUpdateRate: data.autoUpdateRate
+          storeName: data.storeName || 'Mi Comercio',
+          taxId: data.taxId || '',
+          address: data.address || '',
+          phone: data.phone || '',
+          email: data.email || '',
+          receiptFooter: data.receiptFooter || '',
+          taxPercentage: Number(data.taxPercentage) || 0,
+          taxCalculationMode: data.taxCalculationMode === 'additional' ? 'additional' : 'included',
+          exchangeRate: Number(data.exchangeRate) > 0 ? Number(data.exchangeRate) : 52.40,
+          lastRateUpdate: data.lastRateUpdate || new Date().toISOString(),
+          autoUpdateRate: Boolean(data.autoUpdateRate),
+          primaryCurrency: data.primaryCurrency || { code: 'USD', symbol: '$', name: 'Dólar Estadounidense' },
+          secondaryCurrency: data.secondaryCurrency || { code: 'VES', symbol: 'Bs.', name: 'Bolívar Digital' }
         }
       });
     }
@@ -399,4 +405,39 @@ export function subscribeToFirestoreUpdates(
     window.removeEventListener('offline', updateOnlineStatus);
     unsubscribers.forEach(unsub => unsub());
   };
+}
+
+/**
+ * Hard Reset: Deletes all products, sales, purchases, suppliers, and customers from Firestore,
+ * and re-seeds only the default cashier customer.
+ */
+export async function wipeFirestoreDatabase(): Promise<void> {
+  const collectionsToClear = ['products', 'sales', 'purchases', 'customers', 'suppliers'];
+  for (const collName of collectionsToClear) {
+    try {
+      const snap = await getDocs(collection(db, collName));
+      if (!snap.empty) {
+        const deletePromises = snap.docs.map(d => deleteDoc(d.ref));
+        await Promise.all(deletePromises);
+      }
+    } catch (err) {
+      console.warn(`Error clearing Firestore collection ${collName}:`, err);
+    }
+  }
+
+  // Ensure default casual customer exists in Firestore
+  try {
+    await syncCustomerToFirestore({
+      id: "cus-1",
+      name: "Cliente Casual (Venta Mostrador)",
+      taxId: "V-00000000",
+      phone: "N/A",
+      email: "",
+      address: "",
+      creditLimitUSD: 0,
+      currentDebtUSD: 0
+    });
+  } catch (err) {
+    console.warn('Error re-seeding default counter customer in Firestore:', err);
+  }
 }

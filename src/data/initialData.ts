@@ -2,7 +2,7 @@ import { AppState } from '../types';
 import { createDefaultDemoLicense } from '../utils/licenseUtils';
 
 export const initialData: AppState = {
-  license: createDefaultDemoLicense("Supermercado & Distribuidora Éxito", "OMNI-DEMO-2026-INIT"),
+  license: createDefaultDemoLicense("Comercio No Registrado"),
   settings: {
     storeName: "Supermercado & Distribuidora Éxito",
     taxId: "J-40982314-8",
@@ -11,6 +11,7 @@ export const initialData: AppState = {
     email: "ventas@supermercadoxito.com",
     receiptFooter: "¡Gracias por su compra! Conserve su factura para cualquier reclamo o garantía. Válido por 7 días.",
     taxPercentage: 16,
+    taxCalculationMode: 'included',
     primaryCurrency: {
       code: "USD",
       symbol: "$",
@@ -87,6 +88,19 @@ export const initialData: AppState = {
       stock: 50,
       minStock: 15,
       unit: "ud"
+    },
+    {
+      id: "prod-margarina-pastorena",
+      name: "Margarina con Sal La Pastoreña 500g",
+      sku: "MAR-PAS-025",
+      barcode: "7592648698228",
+      category: "Víveres",
+      costUSD: 1.35,
+      priceUSD: 1.95,
+      stock: 48,
+      minStock: 10,
+      unit: "ud",
+      description: "Untable de margarina con sal 60% de grasa La Pastoreña"
     },
     {
       id: "prod-5",

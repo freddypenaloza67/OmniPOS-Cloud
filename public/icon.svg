@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="omniGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="50%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded App Background -->
+  <rect width="512" height="512" rx="112" fill="url(#omniGrad)" />
+  
+  <!-- Register POS Base Icon -->
+  <rect x="96" y="240" width="320" height="190" rx="24" fill="#0f172a" opacity="0.95" />
+  <rect x="116" y="260" width="280" height="50" rx="12" fill="#1e293b" />
+  
+  <!-- Display Screen -->
+  <rect x="136" y="110" width="240" height="110" rx="18" fill="#ffffff" stroke="#38bdf8" stroke-width="6" />
+  <rect x="156" y="130" width="140" height="20" rx="6" fill="#0284c7" />
+  <rect x="156" y="160" width="90" height="14" rx="4" fill="#94a3b8" />
+  <text x="310" y="172" font-family="system-ui, sans-serif" font-size="28" font-weight="900" fill="#059669" text-anchor="middle">$145.00</text>
+  
+  <!-- Screen Stand -->
+  <path d="M236 220 L236 240 L276 240 L276 220 Z" fill="#64748b" />
+  
+  <!-- Keypad Buttons -->
+  <circle cx="150" cy="350" r="14" fill="url(#accentGrad)" />
+  <circle cx="190" cy="350" r="14" fill="#334155" />
+  <circle cx="230" cy="350" r="14" fill="#334155" />
+  <circle cx="270" cy="350" r="14" fill="#334155" />
+  
+  <circle cx="150" cy="390" r="14" fill="#334155" />
+  <circle cx="190" cy="390" r="14" fill="#334155" />
+  <circle cx="230" cy="390" r="14" fill="#334155" />
+  <circle cx="270" cy="390" r="14" fill="#10b981" />
+  
+  <!-- Barcode / Receipt Slot -->
+  <rect x="316" y="336" width="76" height="68" rx="10" fill="#1e293b" stroke="#334155" stroke-width="2" />
+  <path d="M330 350 H378 M330 362 H364 M330 374 H372 M330 386 H356" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" />
+</svg>

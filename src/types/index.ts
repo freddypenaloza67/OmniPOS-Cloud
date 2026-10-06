@@ -46,6 +46,18 @@ export interface SaleItem {
   costUSD: number;
 }
 
+export interface CartItem {
+  productId: string;
+  productName: string;
+  sku: string;
+  barcode?: string;
+  quantity: number;
+  unitPriceUSD: number;
+  subtotalUSD: number;
+  costUSD: number;
+  maxStock: number;
+}
+
 export type PaymentGatewayType = 
   | 'cash_usd' 
   | 'cash_local' 
@@ -119,6 +131,8 @@ export interface Purchase {
   scannedInvoiceUrl?: string;
 }
 
+export type TaxCalculationMode = 'included' | 'additional';
+
 export interface StoreSettings {
   storeName: string;
   taxId: string;
@@ -127,6 +141,7 @@ export interface StoreSettings {
   email: string;
   receiptFooter: string;
   taxPercentage: number;
+  taxCalculationMode?: TaxCalculationMode; // 'included' (Precios con IVA incluido) | 'additional' (Precios más IVA adicional)
   primaryCurrency: {
     code: string;
     symbol: string;
@@ -147,6 +162,8 @@ export interface StoreSettings {
 
 export type AppTheme = 'light' | 'dark' | 'eyecare';
 
+export type NavView = 'dashboard' | 'pos' | 'purchases' | 'inventory' | 'suppliers' | 'customers' | 'reports' | 'settings';
+
 export type UserRole = 'admin' | 'supervisor' | 'cajero';
 
 export interface PosUser {
@@ -157,6 +174,7 @@ export interface PosUser {
   active: boolean;
   email?: string;
   createdAt?: string;
+  allowedModules?: NavView[];
 }
 
 export interface InflowSummary {

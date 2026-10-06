@@ -12,7 +12,8 @@ import {
   PosUser,
   ZReportRecord,
   PaymentMethodEntry,
-  AppTheme
+  AppTheme,
+  CartItem
 } from '../types';
 import { initialData } from '../data/initialData';
 import { 
@@ -30,7 +31,8 @@ import {
   syncPurchaseToFirestore,
   syncSettingsToFirestore,
   seedFirestoreIfEmpty,
-  subscribeToFirestoreUpdates
+  subscribeToFirestoreUpdates,
+  wipeFirestoreDatabase
 } from '../services/firebaseSync';
 
 interface StoreContextType {
@@ -75,10 +77,21 @@ interface StoreContextType {
   updateSupplier: (supplier: Supplier) => Promise<void>;
   updateSettings: (settings: StoreSettings) => Promise<void>;
   resetToDemoData: () => Promise<void>;
+  hardResetDatabase: () => Promise<void>;
   exportDataJSON: () => string;
   importDataJSON: (jsonString: string) => Promise<boolean>;
   theme: AppTheme;
   setTheme: (theme: AppTheme) => void;
+  // Active POS ticket state (persisted across tab switches and page reloads)
+  posCart: CartItem[];
+  setPosCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  posCustomerId: string;
+  setPosCustomerId: (id: string) => void;
+  posDiscountPercent: number;
+  setPosDiscountPercent: (percent: number) => void;
+  posApplyTax: boolean;
+  setPosApplyTax: (apply: boolean) => void;
+  clearPosCart: () => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -124,6 +137,100 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       pushStateToServer(updated);
       return updated;
     });
+  }, []);
+
+  // Active POS cart persistence across module navigation and browser reloads
+  const [posCart, setPosCart] = useState<CartItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('omnipos_active_pos_cart');
+        return saved ? JSON.parse(saved) : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
+  const [posCustomerId, setPosCustomerIdState] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        return localStorage.getItem('omnipos_active_pos_customer_id') || 'cus-1';
+      } catch {
+        return 'cus-1';
+      }
+    }
+    return 'cus-1';
+  });
+
+  const [posDiscountPercent, setPosDiscountPercentState] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('omnipos_active_pos_discount');
+        return saved ? Number(saved) : 0;
+      } catch {
+        return 0;
+      }
+    }
+    return 0;
+  });
+
+  const [posApplyTax, setPosApplyTaxState] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('omnipos_active_pos_apply_tax');
+        return saved !== null ? saved === 'true' : true;
+      } catch {
+        return true;
+      }
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('omnipos_active_pos_cart', JSON.stringify(posCart));
+      } catch (e) {
+        console.warn('Could not save pos cart to localStorage', e);
+      }
+    }
+  }, [posCart]);
+
+  const setPosCustomerId = useCallback((id: string) => {
+    setPosCustomerIdState(id);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('omnipos_active_pos_customer_id', id);
+      } catch {}
+    }
+  }, []);
+
+  const setPosDiscountPercent = useCallback((percent: number) => {
+    setPosDiscountPercentState(percent);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('omnipos_active_pos_discount', String(percent));
+      } catch {}
+    }
+  }, []);
+
+  const setPosApplyTax = useCallback((apply: boolean) => {
+    setPosApplyTaxState(apply);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('omnipos_active_pos_apply_tax', String(apply));
+      } catch {}
+    }
+  }, []);
+
+  const clearPosCart = useCallback(() => {
+    setPosCart([]);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem('omnipos_active_pos_cart');
+      } catch {}
+    }
   }, []);
 
   // Live Firebase connection and offline cache status
@@ -252,7 +359,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             changed = true;
           }
           if (incoming.settings && incoming.settings.storeName) {
-            updated.settings = { ...prev.settings, ...incoming.settings };
+            const rawRate = Number(incoming.settings.exchangeRate);
+            const safeRate = !isNaN(rawRate) && rawRate > 0 ? rawRate : (prev.settings.exchangeRate > 0 ? prev.settings.exchangeRate : 52.40);
+            updated.settings = { 
+              ...prev.settings, 
+              ...incoming.settings,
+              exchangeRate: safeRate,
+              primaryCurrency: incoming.settings.primaryCurrency || prev.settings.primaryCurrency || { code: 'USD', symbol: '$', name: 'Dólar Estadounidense' },
+              secondaryCurrency: incoming.settings.secondaryCurrency || prev.settings.secondaryCurrency || { code: 'VES', symbol: 'Bs.', name: 'Bolívar Digital' }
+            };
             changed = true;
           }
 
@@ -768,6 +883,95 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     await pushStateToServer(initialData);
   };
 
+  const hardResetDatabase = async () => {
+    setSyncing(true);
+    try {
+      // 1. Wipe cloud Firestore collections
+      await wipeFirestoreDatabase();
+
+      // 2. Wipe server database.json
+      try {
+        await fetch('/api/hard-reset', { method: 'POST' });
+      } catch (err) {
+        console.warn('Could not call /api/hard-reset:', err);
+      }
+
+      // 3. Clear active POS tickets and session state
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('omnipos_active_pos_cart');
+        localStorage.setItem('omnipos_active_pos_customer_id', 'cus-1');
+        localStorage.removeItem('omnipos_active_pos_discount');
+      }
+      setPosCart([]);
+      setPosCustomerIdState('cus-1');
+      setPosDiscountPercentState(0);
+
+      // 4. Reset fiscal identity & business info to blank, license to demo, and admin to PIN 1234
+      const cleanSettings: StoreSettings = {
+        storeName: "",
+        taxId: "",
+        address: "",
+        phone: "",
+        email: "",
+        receiptFooter: "",
+        taxPercentage: 16,
+        taxCalculationMode: 'included',
+        primaryCurrency: { code: "USD", symbol: "$", name: "Dólar Estadounidense" },
+        secondaryCurrency: { code: "VES", symbol: "Bs.", name: "Bolívar Digital" },
+        exchangeRate: state.settings?.exchangeRate > 0 ? state.settings.exchangeRate : 52.40,
+        lastRateUpdate: new Date().toISOString(),
+        autoUpdateRate: true,
+        configuredBanks: ['Banesco', 'Banco de Venezuela', 'Mercantil', 'BBVA Provincial', 'BNC', 'Bancaribe', 'Banplus', 'Otro'],
+        defaultThermalWidth: '80mm',
+        theme: 'light'
+      };
+
+      try {
+        await syncSettingsToFirestore(cleanSettings);
+      } catch (err) {
+        console.warn('Could not sync blank settings to Firestore:', err);
+      }
+
+      const cleanState: AppState = {
+        settings: cleanSettings,
+        license: createDefaultDemoLicense('Comercio No Registrado'),
+        products: [],
+        suppliers: [],
+        customers: [
+          {
+            id: "cus-1",
+            name: "Cliente Casual (Venta Mostrador)",
+            taxId: "V-00000000",
+            phone: "N/A",
+            email: "",
+            address: "",
+            creditLimitUSD: 0,
+            currentDebtUSD: 0
+          }
+        ],
+        sales: [],
+        purchases: [],
+        users: [
+          {
+            id: "usr-admin",
+            name: "Administrador General",
+            role: "admin",
+            pin: "1234",
+            active: true,
+            email: "admin@omnipos.com"
+          }
+        ],
+        activeUserId: 'usr-admin',
+        zReports: [],
+        lastSyncedAt: new Date().toISOString()
+      };
+      setState(cleanState);
+      await pushStateToServer(cleanState);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   const exportDataJSON = () => {
     return JSON.stringify(state, null, 2);
   };
@@ -982,10 +1186,20 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateSupplier,
         updateSettings,
         resetToDemoData,
+        hardResetDatabase,
         exportDataJSON,
         importDataJSON,
         theme,
-        setTheme
+        setTheme,
+        posCart,
+        setPosCart,
+        posCustomerId,
+        setPosCustomerId,
+        posDiscountPercent,
+        setPosDiscountPercent,
+        posApplyTax,
+        setPosApplyTax,
+        clearPosCart
       }}
     >
       {children}

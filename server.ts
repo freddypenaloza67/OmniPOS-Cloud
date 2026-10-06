@@ -24,6 +24,8 @@ const PORT = isProduction ? Number(process.env.PORT || 8080) : 3000;
 // Increase body limit to support scanned receipt images and high-resolution photos
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// Serve public assets (manifest, icon, static resources)
+app.use(express.static(path.resolve(process.cwd(), 'public')));
 
 // Ensure data folder and database.json exist
 const dataDir = path.resolve(process.cwd(), 'data');
@@ -158,6 +160,72 @@ app.post('/api/state', (req, res) => {
     res.json({ success: true, lastSyncedAt: updatedState.lastSyncedAt });
   } else {
     res.status(500).json({ error: 'Failed to write state to disk' });
+  }
+});
+
+// Hard Reset: Cleans all transaction, product, customer, supplier data, fiscal identity, and sets demo license
+app.post('/api/hard-reset', (req, res) => {
+  try {
+    const cleanSettings = {
+      storeName: "",
+      taxId: "",
+      address: "",
+      phone: "",
+      email: "",
+      receiptFooter: "",
+      taxPercentage: 16,
+      taxCalculationMode: 'included',
+      primaryCurrency: { code: "USD", symbol: "$", name: "Dólar Estadounidense" },
+      secondaryCurrency: { code: "VES", symbol: "Bs.", name: "Bolívar Digital" },
+      exchangeRate: 52.40,
+      lastRateUpdate: new Date().toISOString(),
+      autoUpdateRate: true,
+      configuredBanks: ['Banesco', 'Banco de Venezuela', 'Mercantil', 'BBVA Provincial', 'BNC', 'Bancaribe', 'Banplus', 'Otro'],
+      defaultThermalWidth: '80mm',
+      theme: 'light'
+    };
+
+    const cleanState = {
+      settings: cleanSettings,
+      license: createDefaultDemoLicense('Comercio No Registrado'),
+      products: [],
+      suppliers: [],
+      customers: [
+        {
+          id: "cus-1",
+          name: "Cliente Casual (Venta Mostrador)",
+          taxId: "V-00000000",
+          phone: "N/A",
+          email: "",
+          address: "",
+          creditLimitUSD: 0,
+          currentDebtUSD: 0
+        }
+      ],
+      sales: [],
+      purchases: [],
+      users: [
+        {
+          id: "usr-admin",
+          name: "Administrador General",
+          role: "admin",
+          pin: "1234",
+          active: true,
+          email: "admin@omnipos.com"
+        }
+      ],
+      activeUserId: "usr-admin",
+      zReports: [],
+      lastSyncedAt: new Date().toISOString()
+    };
+    const ok = writeDatabase(cleanState);
+    if (ok) {
+      res.json({ success: true, cleanState });
+    } else {
+      res.status(500).json({ error: 'Failed to write reset state to disk' });
+    }
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Error executing hard reset' });
   }
 });
 

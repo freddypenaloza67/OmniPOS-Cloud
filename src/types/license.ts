@@ -13,6 +13,7 @@ export interface LicenseData {
   features: string[]; // List of enabled modules
   status: LicenseStatus;
   notes?: string;
+  usedKeys?: string[]; // History of redeemed keys to prevent multiple activations of the same key
 }
 
 export interface LicenseStatusInfo {

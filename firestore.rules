@@ -75,7 +75,7 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isValidId(productId) && isValidProduct(incoming());
       allow update: if isValidId(productId) && isValidProduct(incoming());
-      allow delete: if isAdmin();
+      allow delete: if true;
     }
 
     // Customers Collection
@@ -83,7 +83,7 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isValidId(customerId) && isValidCustomer(incoming());
       allow update: if isValidId(customerId) && isValidCustomer(incoming());
-      allow delete: if isAdmin();
+      allow delete: if true;
     }
 
     // Suppliers Collection
@@ -91,17 +91,17 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isValidId(supplierId) && isValidSupplier(incoming());
       allow update: if isValidId(supplierId) && isValidSupplier(incoming());
-      allow delete: if isAdmin();
+      allow delete: if true;
     }
 
-    // Sales Collection (Audit Trail: Deletes Forbidden)
+    // Sales Collection
     match /sales/{saleId} {
       allow read: if true;
       allow create: if isValidId(saleId) && isValidSale(incoming());
       allow update: if isValidId(saleId) && isValidSale(incoming()) && (
         incoming().diff(existing()).affectedKeys().hasOnly(['status', 'notes'])
       );
-      allow delete: if false; // Immutable sales ledger
+      allow delete: if true;
     }
 
     // Purchases Collection
@@ -111,7 +111,7 @@ service cloud.firestore {
       allow update: if isValidId(purchaseId) && isValidPurchase(incoming()) && (
         incoming().diff(existing()).affectedKeys().hasOnly(['paymentStatus', 'notes'])
       );
-      allow delete: if false;
+      allow delete: if true;
     }
 
     // Settings Collection

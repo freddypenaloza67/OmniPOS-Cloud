@@ -111,18 +111,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate }) => {
           <button
             onClick={handleRefreshRate}
             disabled={isRefreshingRate}
-            className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border border-white/10"
+            className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border border-white/10 cursor-pointer"
+            title="Consultar y actualizar tasa oficial de cambio"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingRate ? 'animate-spin' : ''}`} />
             <span>{isRefreshingRate ? 'Sincronizando...' : 'Actualizar Tasa'}</span>
-          </button>
-
-          <button
-            onClick={() => onNavigate('pos')}
-            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-950/20 flex items-center gap-1.5 transition-all"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            <span>Abrir Caja POS</span>
           </button>
         </div>
       </div>
